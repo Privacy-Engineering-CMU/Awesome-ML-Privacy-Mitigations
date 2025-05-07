@@ -126,16 +126,6 @@ Primary goals:
 * Domain expertise is crucial for effective minimization without harming model utility
 * Regular reassessment is needed as data relevance may change over time
 
-**Code Example [add relevant code example]**:
-```python
-# INSTEAD OF:
-user_data = collect_all_user_attributes()
-
-# DO THIS:
-required_features = ['age_range', 'purchase_history', 'item_interactions']
-user_data = collect_specific_attributes(required_features)
-```
-
 **References**:
 
 <a id="s1-ref1">[1]</a> [The Data Minimization Principle in Machine Learning (Ganesh et al., 2024)](https://arxiv.org/abs/2405.19471) / [Blog](https://medium.com/data-science/data-minimization-does-not-guarantee-privacy-544ca15c7193) - Empirical exploration of data minimization and its misalignment with privacy, along with potential solutions
@@ -412,106 +402,6 @@ user_data = collect_specific_attributes(required_features)
      - [Tumult Analytics](https://github.com/tumult-labs/analytics) - Advanced composition utilities
      - [IBM Differential Privacy Library](https://github.com/IBM/differential-privacy-library) - Composition tools
 
-**Implementation Examples**:
-
-```python
-import numpy as np
-from scipy import stats
-
-# 1. Basic randomized response (Pure ε-DP)
-def randomized_response(true_value, epsilon=1.0):
-    """
-    Apply randomized response to a binary value (pure ε-DP)
-    
-    Parameters:
-    true_value: 0 or 1
-    epsilon: privacy parameter (smaller = more private)
-    
-    Returns:
-    Privatized value (0 or 1)
-    """
-    p = np.exp(epsilon) / (1 + np.exp(epsilon))
-    if true_value == 1:
-        return np.random.choice([0, 1], p=[1-p, p])
-    else:
-        return np.random.choice([0, 1], p=[p, 1-p])
-
-# 2. Laplace mechanism (Pure ε-DP)
-def laplace_mechanism(true_value, sensitivity=1.0, epsilon=1.0):
-    """
-    Apply Laplace mechanism to a numerical value (pure ε-DP)
-    
-    Parameters:
-    true_value: actual numerical value
-    sensitivity: max change one user can make (L1 sensitivity)
-    epsilon: privacy parameter (smaller = more private)
-    
-    Returns:
-    Privatized numerical value
-    """
-    scale = sensitivity / epsilon
-    noise = np.random.laplace(0, scale)
-    return true_value + noise
-
-# 3. Gaussian mechanism (Approximate (ε,δ)-DP)
-def gaussian_mechanism(true_value, sensitivity=1.0, epsilon=1.0, delta=1e-5):
-    """
-    Apply Gaussian mechanism to a numerical value (approximate (ε,δ)-DP)
-    
-    Parameters:
-    true_value: actual numerical value
-    sensitivity: max change one user can make (L2 sensitivity)
-    epsilon: privacy parameter (smaller = more private)
-    delta: failure probability (should be small)
-    
-    Returns:
-    Privatized numerical value
-    """
-    # Calculate sigma based on privacy parameters
-    # This is a simplified calculation - production systems use more precise formulas
-    sigma = (sensitivity / epsilon) * np.sqrt(2 * np.log(1.25 / delta))
-    noise = np.random.normal(0, sigma)
-    return true_value + noise
-
-# 4. Vector-valued Gaussian mechanism ((ε,δ)-DP)
-def vector_gaussian_mechanism(true_vector, l2_sensitivity=1.0, epsilon=1.0, delta=1e-5):
-    """
-    Apply Gaussian mechanism to a vector of values (approximate (ε,δ)-DP)
-    
-    Parameters:
-    true_vector: array of numerical values
-    l2_sensitivity: max L2 norm change one user can make
-    epsilon: privacy parameter (smaller = more private)
-    delta: failure probability (should be small)
-    
-    Returns:
-    Privatized vector of values
-    """
-    # Calculate sigma based on privacy parameters
-    sigma = (l2_sensitivity / epsilon) * np.sqrt(2 * np.log(1.25 / delta))
-    
-    # Generate multivariate Gaussian noise with same sigma for each dimension
-    noise = np.random.normal(0, sigma, size=len(true_vector))
-    
-    return true_vector + noise
-
-# Example application
-raw_data = [10, 15, 12, 18, 20]
-epsilon = 1.0
-delta = 1e-5
-
-# Apply different mechanisms
-laplace_private = [laplace_mechanism(x, epsilon=epsilon) for x in raw_data]
-gaussian_private = [gaussian_mechanism(x, epsilon=epsilon, delta=delta) for x in raw_data]
-
-# Vector example
-vector_private = vector_gaussian_mechanism(np.array(raw_data), epsilon=epsilon, delta=delta)
-
-print(f"Original data: {raw_data}")
-print(f"Laplace mechanism (ε-DP): {laplace_private}")
-print(f"Gaussian mechanism ((ε,δ)-DP): {gaussian_private}")
-print(f"Vector Gaussian ((ε,δ)-DP): {vector_private}")
-```
 
 **Privacy Budget Considerations**:
 
@@ -609,17 +499,6 @@ print(f"Vector Gaussian ((ε,δ)-DP): {vector_private}")
 
 **Description**: Enable multiple parties to jointly compute a function over their inputs while keeping those inputs private.
 
-**Code Example**:
-```python
-# Using MP-SPDZ for secret sharing-based computation
-# Party 1 code:
-from mpspdz.client import MPSPDZClient
-
-client = MPSPDZClient(party_id=0)
-secret_data = client.share_secret(local_features)
-aggregated_model = client.run_computation("secure_model_training")
-predictions = client.predict(aggregated_model, new_data)
-```
 
 **Libraries**:
 - [MP-SPDZ](https://github.com/data61/MP-SPDZ)

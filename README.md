@@ -45,8 +45,8 @@ user_data = collect_specific_attributes(required_features)
 ```
 
 **Resources**:
-- [Data Minimization in Machine Learning (Narayanan & Shmatikov, 2019)](https://arxiv.org/abs/1911.05248)
 - [NIST Privacy Framework](https://www.nist.gov/privacy-framework)
+- [Data Minimization in Machine Learning (Ganesh et al., 2024)](https://arxiv.org/abs/2405.19471)
 
 ### Synthetic Data Generation
 
@@ -153,7 +153,6 @@ predictions = client.predict(aggregated_model, new_data)
 
 **Papers**:
 - [Secure Multiparty Computation (Lindell, 2020)](https://dl.acm.org/doi/10.1145/3387108)
-- [ABY: A Framework for Efficient Mixed-Protocol Secure Two-Party Computation (Demmler et al., 2015)](https://eprint.iacr.org/2015/458)
 
 ## Model Training Phase
 
@@ -237,7 +236,7 @@ model.compile(
 
 **Papers**:
 - [Deep Learning with Differential Privacy (Abadi et al., 2016)](https://arxiv.org/abs/1607.00133)
-- [Differentially Private Model Publishing for Deep Learning (Papernot et al., 2018)](https://arxiv.org/abs/1802.08908)
+- [Differentially Private Model Publishing for Deep Learning (Yu et al., 2018)](https://arxiv.org/abs/1904.02200)
 
 ### Federated Learning
 
@@ -546,13 +545,6 @@ else:
 - [Communication-Efficient Learning of Deep Networks from Decentralized Data (McMahan et al., 2017)](https://arxiv.org/abs/1602.05629)
 - [CryptoNets: Applying Neural Networks to Encrypted Data with High Throughput and Accuracy (Gilad-Bachrach et al., 2016)](https://www.microsoft.com/en-us/research/publication/cryptonets-applying-neural-networks-to-encrypted-data-with-high-throughput-and-accuracy/)
 
-### Recent Advances
-
-- [Federated Optimization: Distributed Machine Learning for On-Device Intelligence (Konečný et al., 2016)](https://arxiv.org/abs/1610.02527)
-- [Privacy Accounting and Quality Control in the Sage Differentially Private ML Platform (Jagielski et al., 2020)](https://arxiv.org/abs/2006.04631)
-- [Federated Reconstruction: Partially Local Federated Learning (Sharma et al., 2019)](https://arxiv.org/abs/1811.11400)
-- [GAN-based synthetic medical image augmentation for increased CNN performance in liver lesion classification (Frid-Adar et al., 2018)](https://www.sciencedirect.com/science/article/abs/pii/S0925231219302358)
-
 ## Contribute
 
 Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first.
@@ -560,5 +552,3 @@ Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first
 ## License
 
 [![CC0](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/cc-zero.svg)](https://creativecommons.org/publicdomain/zero/1.0)
-
-To the extent possible under law, the authors have waived all copyright and related or neighboring rights to this work.

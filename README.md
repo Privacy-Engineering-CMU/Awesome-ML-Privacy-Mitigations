@@ -25,8 +25,18 @@ This repository aims to bridge the gap between theoretical privacy research and 
 - [6. Evaluation & Metrics](#6-evaluation--metrics)
   - [6.1 Privacy Metrics](#61-privacy-metrics)
   - [6.2 Utility Metrics](#62-utility-metrics)
-- [Libraries & Tools](#libraries--tools)
-- [Tutorials & Notebooks](#tutorials--notebooks)
+- [7. Libraries & Tools](#7-libraries--tools)
+  - [7.1 Differential Privacy](#71-differential-privacy)
+  - [7.2 Federated Learning](#72-federated-learning)
+  - [7.3 Secure Computation](#73-secure-computation)
+  - [7.4 Synthetic Data](#74-synthetic-data)
+  - [7.5 Privacy Evaluation](#75-privacy-evaluation)
+- [8. Tutorials & Resources](#8-tutorials--resources)
+  - [8.1 Differential Privacy](#81-differential-privacy)
+  - [8.2 Federated Learning](#82-federated-learning)
+  - [8.3 Secure Computation](#83-secure-computation)
+  - [8.4 Synthetic Data](#84-synthetic-data)
+  - [8.5 Privacy Evaluation](#85-privacy-evaluation)
 - [Contribute](#contribute)
 
 ## Introduction
@@ -39,15 +49,21 @@ Primary goals:
 - ✅ Help practitioners select appropriate techniques for their use case
 - ✅ Maintain up-to-date links to libraries, tools, and research
 
-## 1. Data Collection Phase
+## 1. Data Collection Phase {#1-data-collection-phase}
 
-### 1.1 Data Minimization
+### 1.1 Data Minimization {#11-data-minimization}
 
 **Description**: 
 * Collecting only the data necessary for the intended purpose
 * Built on two core privacy pillars: purpose limitation and data relevance
 * Different from anonymization - focuses on reducing data collection upfront rather than transforming collected data
 * Mandated by regulations like GDPR and CCPA as a fundamental privacy principle [[1]](#s1-ref1)
+
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**: [NISTAML.032] Data Reconstruction
+* **Additional Protection**:
+  * [NISTAML.033] Membership Inference
+  * [NISTAML.034] Property Inference
 
 **Why It Matters for ML**:
 * Machine learning systems often collect excessive data "just in case," creating unnecessary privacy risks
@@ -62,12 +78,19 @@ Primary goals:
   - Define explicit variables needed for model functionality based on domain expertise
   - Document justification for each feature's necessity relative to the model's objective
   - Avoid collecting indirect identifiers where possible
+  * **Libraries**:
+    - [ML Privacy Meter](https://github.com/privacytrustlab/ml_privacy_meter) - Privacy risk assessment
+    - [Adversarial Robustness Toolbox](https://github.com/Trusted-AI/adversarial-robustness-toolbox) - Feature importance analysis
 
 * **Feature Selection and Evaluation**
   - Apply feature importance ranking to identify non-essential features [[3]](#s1-ref3)
   - Evaluate correlation between features to avoid redundant data collection
   - Measure model performance impact when removing features
   - Test different feature subsets to find minimal viable feature set
+  * **Libraries**:
+    - [scikit-learn](https://scikit-learn.org/) - Feature selection utilities
+    - [SHAP](https://github.com/slundberg/shap) - Feature importance analysis
+    - [Data Shapley](https://github.com/amiratag/DataShapley) - Data valuation
 
 * **Ongoing Governance**
   - Implement data expiration policies to remove data that's no longer needed
@@ -78,7 +101,6 @@ Primary goals:
 
 * **Feature Selection Methods**
   - Column-based filtering with domain expertise validation
-  - PDCA (Plan-Do-Check-Act) cycle for iterative minimization
   - Feature importance analysis using permutation importance or Shapley values [[4]](#s1-ref4)
   - Privacy Impact Assessment (PIA) frameworks for systematic evaluation
   
@@ -95,8 +117,7 @@ Primary goals:
 **Utility/Privacy Trade-off**: 
 
 * Minimal impact on model utility if properly implemented with domain expertise
-* Prevents feature creep and reduces risk surface
-* Research shows some models can maintain accuracy with significantly reduced feature sets [[7]](#s1-ref7)
+* Models can maintain accuracy with significantly reduced feature sets [[7]](#s1-ref7)
 * Impact varies by domain and use case - requires empirical testing
 
 **Important Considerations**:
@@ -105,7 +126,7 @@ Primary goals:
 * Domain expertise is crucial for effective minimization without harming model utility
 * Regular reassessment is needed as data relevance may change over time
 
-**Code Example**:
+**Code Example [add relevant code example]**:
 ```python
 # INSTEAD OF:
 user_data = collect_all_user_attributes()
@@ -131,52 +152,150 @@ user_data = collect_specific_attributes(required_features)
 
 <a id="s1-ref7">[7]</a> [Selecting critical features for data classification based on machine learning methods (Dewi et al., 2020)](https://journalofbigdata.springeropen.com/articles/10.1186/s40537-020-00327-4) - Demonstrates that feature selection improves model accuracy and performance while reducing dimensionality
 
-### 1.2 Synthetic Data Generation
+### 1.2 Synthetic Data Generation {#12-synthetic-data-generation}
 
-**Description**: Create artificial data that preserves statistical properties without containing real individual information.
+**Description**: 
+* Creating artificial data that preserves statistical properties without containing real individual information
+* Alternative to traditional anonymization for enabling data sharing and machine learning
+* Generates new data points rather than transforming existing ones
+* Increasingly adopted for privacy-sensitive applications [[1]](#s2-ref1)
 
-**Approaches**:
-1. Generative Adversarial Networks (GANs)
-    * Implementation: Train generator and discriminator networks on original data
-    * Best for: Complex, high-dimensional data like images
-    * Tools: CTGAN, TableGAN
-2. Variational Autoencoders (VAEs)
-    * Implementation: Train encoder-decoder architecture with KL divergence
-    * Best for: Tabular data with mixed types
-    * Tools: SDV (Synthetic Data Vault)
-3. SMOTE and Variations
-    * Implementation: Generate synthetic minority samples for imbalanced data
-    * Best for: Addressing class imbalance
-    * Tools: imbalanced-learn Python package
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**:
+  * [NISTAML.037] Training Data Attacks
+  * [NISTAML.038] Data Extraction
+* **Additional Protection**:
+  * [NISTAML.033] Membership Inference
 
-**Code Examples**:
+**Why It Matters for ML**:
+* Provides training data for models without exposing real individuals' information directly
+* Helps address data scarcity and imbalance issues in specialized domains
+* Enables experimentation and development while minimizing privacy risks
+* Facilitates data sharing across organizations or with researchers [[2]](#s2-ref2)
 
-**1. Tabular Data (CTGAN)**:
-```python
-from sdv.tabular import CTGAN
+**Implementation Approaches**:
 
-# Train model
-model = CTGAN()
-model.fit(real_data)
+1. **Generative Adversarial Networks (GANs)**
+   * **Mechanism**: Two-network architecture where generator creates samples and discriminator evaluates authenticity
+   * **Best For**: Complex, high-dimensional data including tabular, time-series, and images
+   * **Variants**: CTGAN for tabular data, PATE-GAN for enhanced privacy guarantees [[3]](#s2-ref3)
+   * **Libraries**:
+     - [CTGAN](https://github.com/sdv-dev/CTGAN) - Tabular data generation
+     - [PATE-GAN](https://github.com/vanderschaarlab/mlforhealthlabpub/tree/main/alg/pategan) - Privacy-preserving GAN
+     - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics) - GAN-based synthesis
 
-# Generate synthetic data
-synthetic_data = model.sample(num_rows=10000)
-```
+2. **Variational Autoencoders (VAEs)**
+   * **Mechanism**: Encoder-decoder architecture with probabilistic latent space
+   * **Best For**: Tabular data with mixed numerical and categorical variables
+   * **Variants**: TVAE specifically designed for tabular data [[4]](#s2-ref4)
+   * **Libraries**:
+     - [SDV](https://github.com/sdv-dev/SDV) - TVAE implementation
+     - [Ydata-Synthetic](https://github.com/ydataai/ydata-synthetic) - VAE-based synthesis
+     - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics) - VAE support
 
-**2. Differentially Private GAN**:
-```python
-from pate_gan import PATEGAN
+3. **Hybrid Approaches**
+   * **Mechanism**: Combines VAE's encoding capabilities with GAN's generation abilities
+   * **Best For**: Applications requiring both high fidelity and enhanced privacy protection
+   * **Recent Advances**: VAE-GAN models with improved membership inference resistance [[5]](#s2-ref5)
+   * **Libraries**:
+     - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics) - Hybrid models
+     - [Ydata-Synthetic](https://github.com/ydataai/ydata-synthetic) - Advanced synthesis
 
-# Initialize model with privacy parameters
-model = PATEGAN(
-    epsilon=3.0,  # Privacy budget
-    delta=1e-5    # Privacy failure probability
-)
+4. **Traditional Statistical Methods**
+   * **Bayesian Networks**: Model conditional dependencies between variables
+   * **Copula Methods**: Capture complex correlation structures
+   * **SMOTE**: Generate synthetic minority samples for imbalanced data
+   * **Libraries**:
+     - [SDV](https://github.com/sdv-dev/SDV) - Statistical methods
+     - [imbalanced-learn](https://github.com/scikit-learn-contrib/imbalanced-learn) - SMOTE implementation
+     - [Copulas](https://github.com/sdv-dev/Copulas) - Copula-based synthesis
 
-# Train and generate
-model.train(real_data, epochs=100)
-synthetic_data = model.generate(1000)
-```
+**Critical Privacy Evaluation**:
+
+* **Common Evaluation Approaches** [[7]](#s2-ref7)
+   * Measuring similarity between synthetic data and original data
+   * Testing for successful membership inference attacks
+   * Analyzing model performance when trained on synthetic versus real data
+
+* **Limitations of Current Metrics** [[8]](#s2-ref8)
+   * Distance-based metrics may not capture actual privacy risks
+   * Simple attacker models don't reflect sophisticated real-world attacks
+   * Averaged metrics can miss vulnerabilities affecting minority groups or outliers
+   * Results often vary significantly with different random initializations
+
+* **Beyond Empirical Metrics**
+   * Complementing testing with formal privacy guarantees like differential privacy 
+   * Adopting adversarial mindset when evaluating privacy claims
+   * Considering multiple attack vectors beyond basic membership inference [[9]](#s2-ref9)
+
+**Important Considerations**:
+
+* **Privacy-Utility Trade-off**
+   * Higher privacy protection typically reduces data utility and vice versa
+   * Optimal balance depends on specific use case and sensitivity of the data
+   * Quantitative measurement of both aspects is essential for decision-making [[10]](#s2-ref10)
+
+* **Technical Challenges**
+   * Handling categorical variables effectively
+   * Preserving complex relationships between features
+   * Scaling to high-dimensional data
+   * Computational resources required for training [[11]](#s2-ref11)
+
+* **Deployment Guidance**
+   * Validate both utility and privacy before use
+   * Consider complementary privacy techniques alongside synthetic data
+   * Be cautious of overstated privacy claims from vendors
+   * Match evaluation rigor to application sensitivity [[12]](#s2-ref12)
+
+**Implementation Example**:
+#need to add sample
+[SDV tutorial notebooks](https://docs.sdv.dev/sdv/tutorials)
+[Privacy Auditing using ML Privacy Meter](https://github.com/privacytrustlab/ml_privacy_meter)
+[]
+
+**Best Practices**:
+
+* **Data Preprocessing**
+  * Remove direct identifiers before synthetic data generation
+  * Consider dimensionality reduction for very high-dimensional data
+  * Address class imbalance issues at preprocessing stage
+
+* **Model Selection and Configuration**
+  * Choose generation method based on data type and privacy requirements
+  * Consider differential privacy mechanisms when possible
+  * Tune hyperparameters to balance utility and privacy
+
+* **Evaluation and Validation**
+  * Test with multiple privacy metrics at different thresholds
+  * Evaluate utility for specific downstream tasks
+  * Pay special attention to outliers and minority groups
+  * Document privacy evaluation methodology alongside synthetic data
+
+**References**:
+
+<a id="s2-ref1">[1]</a> [Synthetic Data: Revisiting the Privacy-Utility Trade-off (Sarmin et al., 2024)](https://arxiv.org/abs/2407.07926) - Analysis of privacy-utility trade-offs between synthetic data and traditional anonymization
+
+<a id="s2-ref2">[2]</a> [Machine Learning for Synthetic Data Generation: A Review (Zhao et al., 2023)](https://arxiv.org/abs/2302.04062) - Comprehensive review of synthetic data generation techniques and their applications
+
+<a id="s2-ref3">[3]</a> [Modeling Tabular Data using Conditional GAN (Xu et al., 2019)](https://arxiv.org/abs/1907.00503) - Introduces CTGAN, designed specifically for mixed-type tabular data generation
+
+<a id="s2-ref4">[4]</a> [Tabular and latent space synthetic data generation: a literature review (Garcia-Gasulla et al., 2023)](https://journalofbigdata.springeropen.com/articles/10.1186/s40537-023-00792-7) - Review of data generation methods for tabular data
+
+<a id="s2-ref5">[5]</a> [Synthetic data for enhanced privacy: A VAE-GAN approach against membership inference attacks (Yan et al., 2024)](https://www.sciencedirect.com/science/article/abs/pii/S0950705124015338) - Novel hybrid approach combining VAE and GAN
+
+<a id="s2-ref6">[6]</a> [SMOTE: Synthetic Minority Over-sampling Technique (Chawla et al., 2002)](https://arxiv.org/abs/1106.1813) - Classic approach for generating synthetic samples for minority classes
+
+<a id="s2-ref7">[7]</a> [Empirical privacy metrics: the bad, the ugly... and the good, maybe? (Desfontaines, 2024)](https://desfontain.es/privacy/empirical-privacy-metrics.html) - Critical analysis of common empirical privacy metrics in synthetic data
+
+<a id="s2-ref8">[8]</a> [Challenges of Using Synthetic Data Generation Methods for Tabular Microdata (Winter & Tolan, 2023)](https://www.mdpi.com/2076-3417/14/14/5975) - Empirical study of trade-offs in different synthetic data generation methods
+
+<a id="s2-ref9">[9]</a> [Privacy Auditing of Machine Learning using Membership Inference Attacks (Yaghini et al., 2021)](https://openreview.net/forum?id=EG5Pgd7-MY) - Framework for privacy auditing in ML models
+
+<a id="s2-ref10">[10]</a> [PATE-GAN: Generating Synthetic Data with Differential Privacy Guarantees (Jordon et al., 2019)](https://openreview.net/forum?id=S1zk9iRqF7) - Integrates differential privacy into GANs using the PATE framework
+
+<a id="s2-ref11">[11]</a> [A Critical Review on the Use (and Misuse) of Differential Privacy in Machine Learning (Domingo-Ferrer & Soria-Comas, 2022)](https://dl.acm.org/doi/10.1145/3547139) - Analysis of privacy in ML including synthetic data approaches
+
+<a id="s2-ref12">[12]</a> [Protect and Extend - Using GANs for Synthetic Data Generation of Time-Series Medical Records (2024)](https://arxiv.org/html/2402.14042v1) - Application and evaluation of synthetic data in healthcare domain
 
 **Libraries**:
 - [SDV (Synthetic Data Vault)](https://github.com/sdv-dev/SDV)
@@ -184,49 +303,309 @@ synthetic_data = model.generate(1000)
 - [PATE-GAN](https://github.com/vanderschaarlab/mlforhealthlabpub/tree/main/alg/pategan)
 - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics)
 
-**Privacy-Utility Trade-offs**:
-- Accuracy drop: 5-15% for complex datasets
-- Privacy: No direct mapping to original data, but still vulnerable to certain attacks
+## 2. Data Processing Phase {#2-data-processing-phase}
 
-**Papers**:
-- [Modeling Tabular Data using Conditional GAN (Xu et al., 2019)](https://arxiv.org/abs/1907.00503)
-- [PATE-GAN: Generating Synthetic Data with Differential Privacy Guarantees (Jordon et al., 2019)](https://openreview.net/forum?id=S1zk9iRqF7)
+### 2.1 Local Differential Privacy (LDP) {#21-local-differential-privacy-ldp}
 
-## 2. Data Processing Phase
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**:
+  * [NISTAML.032] Data Reconstruction
+  * [NISTAML.033] Membership Inference
+* **Additional Protection**:
+  * [NISTAML.034] Property Inference
 
-### 2.1 Local Differential Privacy (LDP)
+**Description**: 
+* Adding calibrated noise to data on the user's device before it leaves their control
+* Provides strong privacy guarantees without requiring a trusted central aggregator
+* Each user independently applies a randomization mechanism to their own data
+* Allows organizations to collect sensitive data while maintaining formal privacy guarantees [[1]](#ldp-ref1r)
 
-**Description**: Add calibrated noise to data before it leaves the user's device.
+**Key Concepts**:
 
-**Code Example**:
+* **Definition**: Algorithm M satisfies ε-LDP if for all possible inputs x, x' and all possible outputs y: 
+  ```
+  Pr[M(x) = y] ≤ e^ε × Pr[M(x') = y]
+  ```
+
+* **Versus Central DP**: LDP typically requires more noise than central DP for the same privacy level but eliminates the need for a trusted data collector [[2]](#ldp-ref2r)
+
+* **Privacy Budget Management**: 
+  * ε value controls privacy-utility trade-off
+  * Lower ε = stronger privacy but greater accuracy loss
+  * Composition: Multiple LDP queries consume privacy budget cumulatively [[3]](#ldp-ref3r)
+
+**Variants of Differential Privacy**:
+
+1. **Pure ε-Differential Privacy**
+   * **Definition**: The strictest form, defined by the inequality above
+   * **Properties**: 
+     - No probability of failure
+     - Strict worst-case guarantees
+     - Typically requires more noise than relaxed versions
+   * **Local Application**: Randomized response, RAPPOR in high-privacy settings [[4]](#ldp-ref4r)
+
+2. **Approximate (ε,δ)-Differential Privacy**
+   * **Definition**: Relaxes pure DP by allowing small probability δ of exceeding the privacy bound
+   * **Properties**:
+     - More practical for many applications
+     - Allows δ probability of information leakage
+     - Enables more efficient mechanisms
+   * **Local Application**: Gaussian mechanism, discrete Laplace in local settings [[5]](#ldp-ref5r)
+
+3. **Rényi Differential Privacy (RDP)**
+   * **Definition**: Based on Rényi divergence between output distributions
+   * **Properties**:
+     - Better handles composition of mechanisms
+     - More precise accounting of privacy loss
+     - Particularly useful for iterative algorithms
+   * **Local Application**: Advanced LDP systems with multiple rounds of communication [[6]](#ldp-ref6r)
+
+4. **Gaussian Differential Privacy (GDP)**
+   * **Definition**: Special form that connects DP to hypothesis testing
+   * **Properties**:
+     - Elegant handling of composition via central limit theorem
+     - Natural framework for analyzing mechanisms with Gaussian noise
+     - Tighter bounds than (ε,δ)-DP in many cases
+   * **Local Application**: Modern private federated learning systems [[7]](#ldp-ref7r)
+
+**Implementation Approaches**:
+
+1. **Randomized Response** (for binary/categorical data)
+   * **Mechanism**: Random perturbation of true value based on privacy parameter
+   * **Use Case**: Surveys with sensitive yes/no or categorical questions
+   * **Variants**: Unary encoding, RAPPOR, Generalized Randomized Response [[8]](#ldp-ref8r)
+   * **Libraries**:
+     - [OpenDP](https://github.com/opendp/opendp) - Supports randomized response and RAPPOR
+     - [IBM Differential Privacy Library](https://github.com/IBM/differential-privacy-library) - Implements RAPPOR and variants
+     - [Tumult Analytics](https://github.com/tumult-labs/analytics) - Includes RAPPOR implementation
+
+2. **Laplace Mechanism** (for numerical data)
+   * **Mechanism**: Adds noise calibrated to L1 sensitivity
+   * **Properties**: 
+     - Achieves pure ε-DP
+     - Noise proportional to sensitivity/ε
+     - Simple to implement
+   * **Use Case**: Count queries, sums, averages with bounded sensitivity [[9]](#ldp-ref9r)
+   * **Libraries**:
+     - [Google's Differential Privacy Library](https://github.com/google/differential-privacy) - Core implementation
+     - [OpenDP](https://github.com/opendp/opendp) - Python bindings with Laplace mechanism
+     - [IBM Differential Privacy Library](https://github.com/IBM/differential-privacy-library) - Laplace mechanism with utilities
+
+3. **Gaussian Mechanism** (for numerical data)
+   * **Mechanism**: Adds noise calibrated to L2 sensitivity
+   * **Properties**:
+     - Achieves (ε,δ)-DP
+     - Better for vector-valued functions (lower noise in high dimensions)
+     - Allows leveraging L2 sensitivity
+   * **Use Case**: ML model training, high-dimensional statistics [[10]](#ldp-ref10r)
+   * **Libraries**:
+     - [TensorFlow Privacy](https://github.com/tensorflow/privacy) - DP-SGD implementation
+     - [Opacus](https://github.com/pytorch/opacus) - PyTorch-based DP training
+     - [Microsoft SmartNoise](https://github.com/opendifferentialprivacy/smartnoise-core) - Core implementation
+
+4. **Advanced Techniques**
+   * **Amplification by Shuffling**: Improving privacy by anonymizing source of contributions
+   * **Sampled Gaussian Mechanism**: Subsampling data before applying Gaussian noise
+   * **Discrete Gaussian**: Better handling of integer-valued functions [[11]](#ldp-ref11r)
+   * **Libraries**:
+     - [OpenDP](https://github.com/opendp/opendp) - Supports composition and amplification
+     - [Tumult Analytics](https://github.com/tumult-labs/analytics) - Advanced composition utilities
+     - [IBM Differential Privacy Library](https://github.com/IBM/differential-privacy-library) - Composition tools
+
+**Implementation Examples**:
+
 ```python
-# Basic randomized response for binary attributes
+import numpy as np
+from scipy import stats
+
+# 1. Basic randomized response (Pure ε-DP)
 def randomized_response(true_value, epsilon=1.0):
+    """
+    Apply randomized response to a binary value (pure ε-DP)
+    
+    Parameters:
+    true_value: 0 or 1
+    epsilon: privacy parameter (smaller = more private)
+    
+    Returns:
+    Privatized value (0 or 1)
+    """
     p = np.exp(epsilon) / (1 + np.exp(epsilon))
     if true_value == 1:
         return np.random.choice([0, 1], p=[1-p, p])
     else:
         return np.random.choice([0, 1], p=[p, 1-p])
-        
-# Apply to data before collection
-private_data = [randomized_response(value, epsilon=2.0) for value in raw_data]
+
+# 2. Laplace mechanism (Pure ε-DP)
+def laplace_mechanism(true_value, sensitivity=1.0, epsilon=1.0):
+    """
+    Apply Laplace mechanism to a numerical value (pure ε-DP)
+    
+    Parameters:
+    true_value: actual numerical value
+    sensitivity: max change one user can make (L1 sensitivity)
+    epsilon: privacy parameter (smaller = more private)
+    
+    Returns:
+    Privatized numerical value
+    """
+    scale = sensitivity / epsilon
+    noise = np.random.laplace(0, scale)
+    return true_value + noise
+
+# 3. Gaussian mechanism (Approximate (ε,δ)-DP)
+def gaussian_mechanism(true_value, sensitivity=1.0, epsilon=1.0, delta=1e-5):
+    """
+    Apply Gaussian mechanism to a numerical value (approximate (ε,δ)-DP)
+    
+    Parameters:
+    true_value: actual numerical value
+    sensitivity: max change one user can make (L2 sensitivity)
+    epsilon: privacy parameter (smaller = more private)
+    delta: failure probability (should be small)
+    
+    Returns:
+    Privatized numerical value
+    """
+    # Calculate sigma based on privacy parameters
+    # This is a simplified calculation - production systems use more precise formulas
+    sigma = (sensitivity / epsilon) * np.sqrt(2 * np.log(1.25 / delta))
+    noise = np.random.normal(0, sigma)
+    return true_value + noise
+
+# 4. Vector-valued Gaussian mechanism ((ε,δ)-DP)
+def vector_gaussian_mechanism(true_vector, l2_sensitivity=1.0, epsilon=1.0, delta=1e-5):
+    """
+    Apply Gaussian mechanism to a vector of values (approximate (ε,δ)-DP)
+    
+    Parameters:
+    true_vector: array of numerical values
+    l2_sensitivity: max L2 norm change one user can make
+    epsilon: privacy parameter (smaller = more private)
+    delta: failure probability (should be small)
+    
+    Returns:
+    Privatized vector of values
+    """
+    # Calculate sigma based on privacy parameters
+    sigma = (l2_sensitivity / epsilon) * np.sqrt(2 * np.log(1.25 / delta))
+    
+    # Generate multivariate Gaussian noise with same sigma for each dimension
+    noise = np.random.normal(0, sigma, size=len(true_vector))
+    
+    return true_vector + noise
+
+# Example application
+raw_data = [10, 15, 12, 18, 20]
+epsilon = 1.0
+delta = 1e-5
+
+# Apply different mechanisms
+laplace_private = [laplace_mechanism(x, epsilon=epsilon) for x in raw_data]
+gaussian_private = [gaussian_mechanism(x, epsilon=epsilon, delta=delta) for x in raw_data]
+
+# Vector example
+vector_private = vector_gaussian_mechanism(np.array(raw_data), epsilon=epsilon, delta=delta)
+
+print(f"Original data: {raw_data}")
+print(f"Laplace mechanism (ε-DP): {laplace_private}")
+print(f"Gaussian mechanism ((ε,δ)-DP): {gaussian_private}")
+print(f"Vector Gaussian ((ε,δ)-DP): {vector_private}")
 ```
 
-**Privacy Budget Guide**:
-- ε = 0.1: Very strong privacy (40-60% accuracy loss)
-- ε = 1.0: Strong privacy (15-30% accuracy loss)
-- ε = 4.0: Moderate privacy (5-15% accuracy loss)
+**Privacy Budget Considerations**:
 
-**Libraries**:
-- [PyDP (Google's Differential Privacy)](https://github.com/OpenMined/PyDP)
-- [Tumult Analytics](https://github.com/tumult-labs/analytics)
-- [IBM Differential Privacy Library](https://github.com/IBM/differential-privacy-library)
+* **Selecting Appropriate Parameters**:
+  * **ε value**: Controls privacy-utility trade-off in all variants
+  * **δ parameter**: Should be smaller than 1/n (n = number of users) for (ε,δ)-DP
+  * **α parameter**: Order of Rényi divergence for RDP [[12]](#ldp-ref12r)
 
-**Papers**:
-- [RAPPOR: Randomized Aggregatable Privacy-Preserving Ordinal Response (Erlingsson et al., 2014)](https://arxiv.org/abs/1407.6981)
-- [Local Differential Privacy: a tutorial (Xiong et al., 2020)](https://arxiv.org/abs/2008.03083)
+* **Composition Advantages of Variants**:
+  * **Pure ε-DP**: Simple linear composition (privacy loss adds up)
+  * **(ε,δ)-DP**: Better composition via advanced composition theorems
+  * **RDP**: Precise tracking of privacy loss under composition
+  * **GDP**: Natural composition via central limit theorem [[13]](#ldp-ref13r)
 
-### 2.2 Secure Multi-Party Computation (SMPC)
+* **Real-World Considerations**:
+  * Theoretical guarantees can be undermined by implementation issues
+  * Floating-point vulnerabilities can affect all variants
+  * Consider robustness to side-channel attacks
+  * Balance between formal guarantees and practical utility [[14]](#ldp-ref14r)
+
+**Use Cases by Variant**:
+
+* **Pure ε-DP**: 
+  * Simple counts and statistics
+  * One-time data collection
+  * Highly sensitive applications requiring strict guarantees
+
+* **(ε,δ)-DP with Gaussian Mechanism**:
+  * Vector-valued queries (where L2 sensitivity << L1 sensitivity)
+  * Applications where moderate relaxation of privacy is acceptable
+  * Machine learning with high-dimensional gradients
+
+* **RDP and Advanced Variants**:
+  * Iterative algorithms with many composed mechanisms
+  * Private machine learning (especially SGD-based)
+  * Complex federated analytics systems [[15]](#ldp-ref15r)
+
+**Few Real-World Applications (more available on [Damien's blog](https://desfontain.es/blog/real-world-differential-privacy.html))**:
+
+* **Apple**: iOS/macOS telemetry and emoji suggestions
+* **Google**: Chrome browser usage statistics via RAPPOR
+* **Microsoft**: Windows telemetry data collection
+* **Meta**: Ad delivery optimization without cross-site tracking 
+
+**Libraries and Tools**:
+
+* **[PyDP (OpenMined)](https://github.com/OpenMined/PyDP)**: Python wrapper around Google's C++ DP library
+* **[Tumult Analytics](https://github.com/tumult-labs/analytics)**: Open-source DP library with LDP support
+* **[IBM Differential Privacy Library](https://github.com/IBM/differential-privacy-library)**: Comprehensive DP toolkit
+* **[Microsoft SmartNoise](https://github.com/opendifferentialprivacy/smartnoise-core)**: Extensible DP framework
+* **[TensorFlow Privacy](https://github.com/tensorflow/privacy)**: DP for machine learning 
+
+**Resources**:
+
+1. <a id="ldp-ref1r"></a>[A friendly introduction to differential privacy (Desfontaines)](https://desfontain.es/privacy/friendly-intro-to-differential-privacy.html) - Accessible explanation of differential privacy concepts and fundamentals
+
+2. <a id="ldp-ref2r"></a>[Local Differential Privacy: a tutorial (Xiong et al., 2020)](https://arxiv.org/abs/2008.03083) - Comprehensive overview of LDP theory and applications
+
+3. <a id="ldp-ref3r"></a>[RAPPOR: Randomized Aggregatable Privacy-Preserving Ordinal Response (Erlingsson et al., 2014)](https://arxiv.org/abs/1407.6981) - Google's LDP system for Chrome usage statistics
+
+4. <a id="ldp-ref4r"></a>[The Algorithmic Foundations of Differential Privacy (Dwork & Roth, 2014)](https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf) - Comprehensive textbook on differential privacy
+
+5. <a id="ldp-ref5r"></a>[Approximate Differential Privacy (Programming Differential Privacy)](https://programming-dp.com/ch6.html) - Detailed guide to approximate DP implementation
+
+6. <a id="ldp-ref6r"></a>[Rényi Differential Privacy (Mironov, 2017)](https://arxiv.org/abs/1702.07476) - Original paper introducing RDP
+
+7. <a id="ldp-ref7r"></a>[Gaussian Differential Privacy (Dong et al., 2022)](https://academic.oup.com/jrsssb/article/84/1/3/7056089) - Framework connecting DP to hypothesis testing
+
+8. <a id="ldp-ref8r"></a>[Getting more useful results with differential privacy (Desfontaines)](https://desfontain.es/privacy/more-useful-results-dp.html) - Practical advice for improving utility in DP systems
+
+9. <a id="ldp-ref9r"></a>[A reading list on differential privacy (Desfontaines)](https://desfontain.es/blog/differential-privacy-reading-list.html) - Curated list of papers and resources for learning DP
+
+10. <a id="ldp-ref10r"></a>[Rényi Differential Privacy of the Sampled Gaussian Mechanism (Mironov et al., 2019)](https://arxiv.org/abs/1908.10530) - Analysis of privacy guarantees for subsampled data
+
+11. <a id="ldp-ref11r"></a>[On the Rényi Differential Privacy of the Shuffle Model (Wang et al., 2021)](https://dl.acm.org/doi/10.1145/3460120.3484794) - Analysis of shuffling for privacy amplification
+
+12. <a id="ldp-ref12r"></a>[Differential Privacy: An Economic Method for Choosing Epsilon (Hsu et al., 2014)](https://www.researchgate.net/publication/260211494_Differential_Privacy_An_Economic_Method_for_Choosing_Epsilon) - Framework for epsilon selection based on economic principles
+
+13. <a id="ldp-ref13r"></a>[Functional Rényi Differential Privacy for Generative Modeling (Jalko et al., 2023)](https://dl.acm.org/doi/10.5555/3666122.3666774) - Extension of RDP to functional outputs
+
+14. <a id="ldp-ref14r"></a>[Precision-based attacks and interval refining: how to break, then fix, differential privacy (Haney et al., 2022)](https://desfontain.es/serious.html) - Analysis of vulnerabilities in DP implementations
+
+15. <a id="ldp-ref15r"></a>[Differential Privacy: A Primer for a Non-technical Audience (Wood et al., 2018)](https://journalprivacyconfidentiality.org/index.php/jpc/article/view/659) - Accessible introduction for non-technical readers
+
+16. <a id="ldp-ref16r"></a>[Using differential privacy to harness big data and preserve privacy (Brookings, 2020)](https://www.brookings.edu/articles/using-differential-privacy-to-harness-big-data-and-preserve-privacy/) - Overview of real-world applications
+
+17. <a id="ldp-ref17r"></a>[Tumult Analytics tutorials](https://docs.tmlt.io/analytics/latest/tutorials/tutorial.html) - Practical guide to implementing DP in real-world scenarios
+
+### 2.2 Secure Multi-Party Computation (SMPC) {#22-secure-multi-party-computation-smpc}
+
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**:
+  * [NISTAML.031] Model Extraction
+  * [NISTAML.032] Data Reconstruction
 
 **Description**: Enable multiple parties to jointly compute a function over their inputs while keeping those inputs private.
 
@@ -251,41 +630,41 @@ predictions = client.predict(aggregated_model, new_data)
 **Papers**:
 - [Secure Multiparty Computation (Lindell, 2020)](https://dl.acm.org/doi/10.1145/3387108)
 
-## 3. Model Training Phase
+## 3. Model Training Phase {#3-model-training-phase}
 
-### 3.1 Differentially Private Training
+### 3.1 Differentially Private Training {#31-differentially-private-training}
+
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**: [NISTAML.033] Membership Inference
+* **Additional Protection**:
+  * [NISTAML.032] Data Reconstruction
+  * [NISTAML.034] Property Inference
 
 **Description**: Train ML models with mathematical privacy guarantees by adding carefully calibrated noise during optimization.
 
-**Code Example with PyTorch and Opacus**:
+**Code Example with FastDP by Amazon**:
 ```python
-import torch
-from opacus import PrivacyEngine
-
-model = MyNeuralNetwork()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
-
-privacy_engine = PrivacyEngine()
-model, optimizer, train_loader = privacy_engine.make_private(
-    module=model,
-    optimizer=optimizer,
-    data_loader=train_loader,
-    noise_multiplier=1.1,     # Higher value = more privacy
-    max_grad_norm=1.0         # Gradient clipping threshold
+from fastDP import PrivacyEngine
+optimizer = SGD(model.parameters(), lr=0.05)
+privacy_engine = PrivacyEngine(
+    model,
+    batch_size=256,
+    sample_size=50000,
+    epochs=3,
+    target_epsilon=2,
+    clipping_fn='automatic',
+    clipping_mode='MixOpt',
+    origin_params=None,
+    clipping_style='all-layer',
 )
+# attaching to optimizers is not needed for multi-GPU distributed learning
+privacy_engine.attach(optimizer) 
 
-# Train with privacy guarantees
-for epoch in range(epochs):
-    for data, target in train_loader:
-        optimizer.zero_grad()
-        output = model(data)
-        loss = criterion(output, target)
-        loss.backward()
-        optimizer.step()
-
-# Get the privacy spent
-epsilon, delta = privacy_engine.get_privacy_spent()
-print(f"Privacy budget spent: (ε = {epsilon:.2f}, δ = {delta})")
+#----- standard training pipeline
+loss = F.cross_entropy(model(batch), labels)
+loss.backward()
+optimizer.step()
+optimizer.zero_grad()
 ```
 
 **Code Example with TensorFlow Privacy**:
@@ -324,6 +703,7 @@ model.compile(
 - [Opacus (PyTorch)](https://github.com/pytorch/opacus)
 - [TensorFlow Privacy](https://github.com/tensorflow/privacy)
 - [JAX Privacy](https://github.com/deepmind/jax_privacy)
+- [FastDP](https://github.com/awslabs/fast-differential-privacy)
 
 **Privacy-Utility Trade-offs**:
 - For ε = 1.0: ~5-15% accuracy drop
@@ -335,7 +715,12 @@ model.compile(
 - [Deep Learning with Differential Privacy (Abadi et al., 2016)](https://arxiv.org/abs/1607.00133)
 - [Differentially Private Model Publishing for Deep Learning (Yu et al., 2018)](https://arxiv.org/abs/1904.02200)
 
-### 3.2 Federated Learning
+### 3.2 Federated Learning {#32-federated-learning}
+
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**:
+  * [NISTAML.038] Data Extraction
+  * [NISTAML.037] Training Data Attacks
 
 **Description**: Train models across multiple devices or servers without exchanging raw data.
 
@@ -395,9 +780,14 @@ for round_num in range(num_rounds):
 - [Practical Secure Aggregation for Federated Learning on User-Held Data (Bonawitz et al., 2017)](https://arxiv.org/abs/1611.04482)
 - [Federated Learning: Strategies for Improving Communication Efficiency (Konečný et al., 2016)](https://arxiv.org/abs/1610.05492)
 
-## 4. Model Deployment Phase
+## 4. Model Deployment Phase {#4-model-deployment-phase}
 
-### 4.1 Private Inference
+### 4.1 Private Inference {#41-private-inference}
+
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**:
+  * [NISTAML.031] Model Extraction
+  * [NISTAML.038] Data Extraction
 
 **Description**: Protect privacy during model inference, where both the model and user inputs need protection.
 
@@ -452,7 +842,12 @@ decrypted_result = encrypted_prediction.decrypt()
 - [CryptoNets: Applying Neural Networks to Encrypted Data with High Throughput and Accuracy (Gilad-Bachrach et al., 2016)](https://www.microsoft.com/en-us/research/publication/cryptonets-applying-neural-networks-to-encrypted-data-with-high-throughput-and-accuracy/)
 - [GAZELLE: A Low Latency Framework for Secure Neural Network Inference (Juvekar et al., 2018)](https://www.usenix.org/conference/usenixsecurity18/presentation/juvekar)
 
-### 4.2 Model Anonymization and Protection
+### 4.2 Model Anonymization and Protection {#42-model-anonymization-and-protection}
+
+**NIST AML Attack Mappings**:
+* **Primary Mitigation**: [NISTAML.031] Model Extraction
+* **Additional Protection**:
+  * [NISTAML.023] Backdoor Poisoning (security-related)
 
 **Description**: Protect the model itself from attacks that aim to extract training data or reverse-engineer model functionality.
 
@@ -495,9 +890,14 @@ def private_inference(input_data):
 - [Distillation as a Defense to Adversarial Perturbations Against Deep Neural Networks (Papernot et al., 2016)](https://arxiv.org/abs/1511.04508)
 - [Membership Inference Attacks Against Machine Learning Models (Shokri et al., 2017)](https://arxiv.org/abs/1610.05820)
 
-## 5. Privacy Governance
+## 5. Privacy Governance {#5-privacy-governance}
 
-### 5.1 Privacy Budget Management
+### 5.1 Privacy Budget Management {#51-privacy-budget-management}
+
+**NIST AML Attack Mappings**:
+* **Risk Management**:
+  * [NISTAML.033] Membership Inference
+  * [NISTAML.032] Data Reconstruction
 
 **Description**: Track and allocate privacy loss across the ML pipeline.
 
@@ -534,7 +934,12 @@ for epoch in range(epochs):
 - [The Algorithmic Foundations of Differential Privacy (Dwork & Roth, 2014)](https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf)
 - [Renyi Differential Privacy (Mironov, 2017)](https://arxiv.org/abs/1702.07476)
 
-### 5.2 Privacy Impact Evaluation
+### 5.2 Privacy Impact Evaluation {#52-privacy-impact-evaluation}
+
+**NIST AML Attack Mappings**:
+* **Vulnerability Assessment**:
+  * [NISTAML.033] Membership Inference
+  * [NISTAML.034] Property Inference
 
 **Description**: Quantitatively measure privacy risks in ML systems.
 
@@ -576,65 +981,166 @@ else:
 - [Evaluating Differentially Private Machine Learning in Practice (Jayaraman & Evans, 2019)](https://arxiv.org/abs/1902.08874)
 - [Machine Learning with Membership Privacy using Adversarial Regularization (Nasr et al., 2018)](https://arxiv.org/abs/1807.05852)
 
-## 6. Evaluation & Metrics
+## 6. Evaluation & Metrics {#6-evaluation--metrics}
 
-### 6.1 Privacy Metrics
+### 6.1 Privacy Metrics {#61-privacy-metrics}
+
+**NIST AML Attack Mappings**:
+* **Comprehensive Coverage**:
+  * [NISTAML.033] Membership Inference
+  * [NISTAML.032] Data Reconstruction
+  * [NISTAML.031] Model Extraction
+  * [NISTAML.034] Property Inference
 
 - **Differential Privacy (ε, δ)**: Smaller values indicate stronger privacy
 - **KL Divergence**: Measures information gain from model about training data
 - **AUC of Membership Inference**: How well attacks can identify training data (closer to 0.5 is better)
 - **Maximum Information Leakage**: Maximum information an adversary can extract
 
-### 6.2 Utility Metrics
+### 6.2 Utility Metrics {#62-utility-metrics}
 
 - **Privacy-Utility Curves**: Plot of accuracy vs. privacy parameter
 - **Performance Gap**: Difference between private and non-private model metrics
 - **Privacy-Constrained Accuracy**: Best accuracy achievable under privacy budget constraint
 
-## Libraries & Tools
+## 7. Libraries & Tools {#7-libraries--tools}
 
-### Differential Privacy
+### 7.1 Differential Privacy {#71-differential-privacy}
 
 - [PyDP (Google's Differential Privacy)](https://github.com/OpenMined/PyDP) - Python wrapper for Google's Differential Privacy library
 - [Opacus](https://github.com/pytorch/opacus) - PyTorch-based library for differential privacy in deep learning
 - [TensorFlow Privacy](https://github.com/tensorflow/privacy) - TensorFlow-based library for differential privacy
 - [Diffprivlib](https://github.com/IBM/differential-privacy-library) - IBM's library for differential privacy
+- [Tumult Analytics](https://github.com/tumult-labs/analytics) - Open-source DP library with LDP support
+- [Microsoft SmartNoise](https://github.com/opendifferentialprivacy/smartnoise-core) - Extensible DP framework
 
-### Federated Learning
+### 7.2 Federated Learning {#72-federated-learning}
 
 - [TensorFlow Federated](https://github.com/tensorflow/federated) - Google's framework for federated learning
 - [Flower](https://github.com/adap/flower) - A friendly federated learning framework
 - [PySyft](https://github.com/OpenMined/PySyft) - Library for secure and private ML with federated learning
 - [FATE](https://github.com/FederatedAI/FATE) - Industrial-grade federated learning framework
+- [FedML](https://github.com/FedML-AI/FedML) - Research-oriented federated learning framework
+- [NVFlare](https://github.com/NVIDIA/NVFlare) - NVIDIA's federated learning framework
 
-### Secure Computation
+### 7.3 Secure Computation {#73-secure-computation}
 
 - [TenSEAL](https://github.com/OpenMined/TenSEAL) - Library for homomorphic encryption with tensor operations
 - [Microsoft SEAL](https://github.com/microsoft/SEAL) - Homomorphic encryption library
 - [CrypTen](https://github.com/facebookresearch/CrypTen) - Framework for privacy-preserving machine learning based on PyTorch
 - [MP-SPDZ](https://github.com/data61/MP-SPDZ) - Secure multi-party computation framework
+- [TF Encrypted](https://github.com/tf-encrypted/tf-encrypted) - Privacy-preserving machine learning in TensorFlow
 
-### Synthetic Data
+### 7.4 Synthetic Data {#74-synthetic-data}
 
 - [SDV](https://github.com/sdv-dev/SDV) - Synthetic data generation ecosystem of libraries
 - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics) - Synthetic data generation with privacy guarantees
-- [Synthetic Data Vault](https://github.com/sdv-dev/SDV) - Framework for generating synthetic data
+- [CTGAN](https://github.com/sdv-dev/CTGAN) - GAN-based tabular data synthesis
+- [Ydata-Synthetic](https://github.com/ydataai/ydata-synthetic) - Synthetic data generation for tabular and time-series data
 
-### Privacy Evaluation
+### 7.5 Privacy Evaluation {#75-privacy-evaluation}
 
 - [ML Privacy Meter](https://github.com/privacytrustlab/ml_privacy_meter) - Tool for quantifying privacy risks in ML
 - [Adversarial Robustness Toolbox](https://github.com/Trusted-AI/adversarial-robustness-toolbox) - For evaluating model robustness including privacy attacks
+- [TensorFlow Privacy Attacks](https://github.com/tensorflow/privacy) - Implementation of privacy attacks in TensorFlow
 
-## Tutorials & Notebooks
+## 8. Tutorials & Resources {#8-tutorials--resources}
 
-- [Differential Privacy in TensorFlow (Google)](https://github.com/tensorflow/privacy/tree/master/tutorials)
-- [Federated Learning with TFF (Google)](https://www.tensorflow.org/federated/tutorials/federated_learning_for_image_classification)
-- [Private Deep Learning with PyTorch and Opacus (Facebook)](https://github.com/pytorch/opacus/tree/main/examples)
-- [Homomorphic Encryption for ML (Microsoft)](https://github.com/microsoft/SEAL/tree/main/examples)
-- [Privacy-Preserving Medical Image Analysis (PyMedPhys)](https://github.com/pymedphys/pymedphys/tree/main/examples)
+### 8.1 Differential Privacy Tutorials {#81-differential-privacy}
 
+- [Google's Differential Privacy Tutorial](https://github.com/google/differential-privacy/tree/main/examples)
+  - **Language**: C++, Go, Java
+  - **Highlights**: Count-min sketch, quantiles, bounded mean and sum implementations
 
-## Contribute
+- [OpenDP Tutorial Series](https://docs.opendp.org/en/stable/user/tutorials/index.html)
+  - **Language**: Python
+  - **Highlights**: Step-by-step tutorials on measurements, transformations, composition
+
+- [Opacus Tutorials](https://github.com/pytorch/opacus/tree/main/tutorials)
+  - **Language**: Python (PyTorch)
+  - **Highlights**: DP-SGD implementation, privacy accounting, CIFAR-10 training
+
+- [TensorFlow Privacy Tutorials](https://github.com/tensorflow/privacy/tree/master/tutorials)
+  - **Language**: Python (TensorFlow)
+  - **Highlights**: DP-SGD, membership inference attacks, privacy accounting
+
+- [IBM Differential Privacy Library Tutorials](https://github.com/IBM/differential-privacy-library/tree/main/notebooks)
+  - **Language**: Python
+  - **Highlights**: DP with scikit-learn integration, classification, regression
+
+### 8.2 Federated Learning Tutorials {#82-federated-learning}
+
+- [TensorFlow Federated Tutorials](https://www.tensorflow.org/federated/tutorials)
+  - **Language**: Python (TensorFlow)
+  - **Highlights**: Image classification, custom aggregations, federated analytics
+
+- [Flower Federated Learning Tutorials](https://flower.dev/docs/tutorial/quickstart-pytorch.html)
+  - **Language**: Python (framework-agnostic)
+  - **Highlights**: PyTorch, TensorFlow, scikit-learn integrations, simulation
+
+- [PySyft Tutorials](https://github.com/OpenMined/PySyft/tree/dev/examples)
+  - **Language**: Python
+  - **Highlights**: Privacy-preserving federated learning, secure aggregation
+
+- [FedML Tutorials](https://doc.fedml.ai/starter/examples.html)
+  - **Language**: Python
+  - **Highlights**: Cross-device FL, cross-silo FL, mobile device examples
+
+- [NVFlare Examples](https://github.com/NVIDIA/NVFlare/tree/main/examples)
+  - **Language**: Python
+  - **Highlights**: Medical imaging, federated analytics, custom aggregation
+
+### 8.3 Secure Computation Tutorials {#83-secure-computation}
+
+- [Microsoft SEAL Examples](https://github.com/microsoft/SEAL/tree/main/native/examples)
+  - **Language**: C++
+  - **Highlights**: Basic operations, encoding, encryption, performance
+
+- [TenSEAL Tutorials](https://github.com/OpenMined/TenSEAL/tree/main/tutorials)
+  - **Language**: Python
+  - **Highlights**: Encrypted neural networks, homomorphic operations on tensors
+
+- [CrypTen Tutorials](https://github.com/facebookresearch/CrypTen/tree/main/tutorials)
+  - **Language**: Python (PyTorch)
+  - **Highlights**: Secure multi-party computation for machine learning models
+
+- [TF Encrypted Examples](https://github.com/tf-encrypted/tf-encrypted/tree/master/examples)
+  - **Language**: Python (TensorFlow)
+  - **Highlights**: Private predictions, secure training, encrypted computations
+
+### 8.4 Synthetic Data Tutorials {#84-synthetic-data}
+
+- [SDV Tutorials](https://docs.sdv.dev/sdv/tutorials)
+  - **Language**: Python
+  - **Highlights**: Tabular data generation, relational data synthesis, evaluation
+
+- [CTGAN Examples](https://github.com/sdv-dev/CTGAN/tree/master/examples)
+  - **Language**: Python
+  - **Highlights**: GAN-based tabular data synthesis, training and sampling
+
+- [Gretel Tutorials](https://github.com/gretelai/gretel-synthetics/tree/main/examples)
+  - **Language**: Python
+  - **Highlights**: Synthetic data with privacy guarantees, quality evaluation
+
+- [Ydata-Synthetic Examples](https://github.com/ydataai/ydata-synthetic/tree/dev/examples)
+  - **Language**: Python
+  - **Highlights**: GAN models for tabular and time-series data
+
+### 8.5 Privacy Evaluation Tutorials {#85-privacy-evaluation}
+
+- [ML Privacy Meter Tutorial](https://github.com/privacytrustlab/ml_privacy_meter/tree/master/examples)
+  - **Language**: Python (TensorFlow)
+  - **Highlights**: Membership inference attacks, measuring model privacy leaks
+
+- [Adversarial Robustness Toolbox Tutorials](https://github.com/Trusted-AI/adversarial-robustness-toolbox/tree/main/notebooks/privacy)
+  - **Language**: Python
+  - **Highlights**: Membership inference, attribute inference, model inversion attacks
+
+- [TensorFlow Privacy Attacks](https://github.com/tensorflow/privacy/tree/master/tensorflow_privacy/privacy/membership_inference_attack/demos)
+  - **Language**: Python (TensorFlow)
+  - **Highlights**: Membership inference attack implementation and evaluation
+
+## Contribute {#contribute}
 
 Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first.
 

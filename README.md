@@ -15,7 +15,6 @@ This repository aims to bridge the gap between theoretical privacy research and 
 - [Evaluation & Metrics](#evaluation--metrics)
 - [Libraries & Tools](#libraries--tools)
 - [Tutorials & Notebooks](#tutorials--notebooks)
-- [Research Papers](#research-papers)
 - [Contribute](#contribute)
 
 ## Introduction
@@ -536,14 +535,6 @@ else:
 - [Homomorphic Encryption for ML (Microsoft)](https://github.com/microsoft/SEAL/tree/main/examples)
 - [Privacy-Preserving Medical Image Analysis (PyMedPhys)](https://github.com/pymedphys/pymedphys/tree/main/examples)
 
-## Research Papers
-
-### Foundational Papers
-
-- [The Algorithmic Foundations of Differential Privacy (Dwork & Roth, 2014)](https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf)
-- [Deep Learning with Differential Privacy (Abadi et al., 2016)](https://arxiv.org/abs/1607.00133)
-- [Communication-Efficient Learning of Deep Networks from Decentralized Data (McMahan et al., 2017)](https://arxiv.org/abs/1602.05629)
-- [CryptoNets: Applying Neural Networks to Encrypted Data with High Throughput and Accuracy (Gilad-Bachrach et al., 2016)](https://www.microsoft.com/en-us/research/publication/cryptonets-applying-neural-networks-to-encrypted-data-with-high-throughput-and-accuracy/)
 
 ## Contribute
 

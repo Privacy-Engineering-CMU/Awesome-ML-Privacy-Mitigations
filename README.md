@@ -19,7 +19,7 @@ This repository aims to bridge the gap between theoretical privacy research and 
 
 ## Introduction
 
-Machine learning systems increasingly handle sensitive data, making privacy protection essential. Building on the [NIST Adversarial Machine Learning Taxonomy](https://csrc.nist.gov/pubs/ai/100/2/e2023/final), this repository provides implementation-focused guidance for ML practitioners.
+Machine learning systems increasingly handle sensitive data, making privacy protection essential. Building on the [NIST Adversarial Machine Learning Taxonomy (2025)](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf), this repository provides implementation-focused guidance for ML practitioners.
 
 Primary goals:
 - ✅ Provide code examples for privacy-preserving techniques

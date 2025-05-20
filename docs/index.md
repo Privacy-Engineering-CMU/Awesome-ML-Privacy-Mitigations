@@ -54,9 +54,9 @@ Primary goals:
 - ✅ Help practitioners select appropriate techniques for their use case
 - ✅ Maintain up-to-date links to libraries, tools, and research
 
-## 1. Data Collection Phase {#1-data-collection-phase}
+## 1. Data Collection Phase
 
-### 1.1 Data Minimization {#11-data-minimization}
+### 1.1 Data Minimization
 
 **Description**: 
 * Collecting only the data necessary for the intended purpose
@@ -147,7 +147,7 @@ Primary goals:
 
 <a id="s1-ref7">[7]</a> [Selecting critical features for data classification based on machine learning methods (Dewi et al., 2020)](https://journalofbigdata.springeropen.com/articles/10.1186/s40537-020-00327-4) - Demonstrates that feature selection improves model accuracy and performance while reducing dimensionality
 
-### 1.2 Synthetic Data Generation {#12-synthetic-data-generation}
+### 1.2 Synthetic Data Generation
 
 **Description**: 
 * Creating artificial data that preserves statistical properties without containing real individual information
@@ -298,9 +298,9 @@ Primary goals:
 - [PATE-GAN](https://github.com/vanderschaarlab/mlforhealthlabpub/tree/main/alg/pategan)
 - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics)
 
-## 2. Data Processing Phase {#2-data-processing-phase}
+## 2. Data Processing Phase
 
-### 2.1 Local Differential Privacy (LDP) {#21-local-differential-privacy-ldp}
+### 2.1 Local Differential Privacy (LDP)
 
 **NIST AML Attack Mappings**:
 * **Primary Mitigation**:
@@ -495,7 +495,7 @@ Primary goals:
 
 17. <a id="ldp-ref17r"></a>[Tumult Analytics tutorials](https://docs.tmlt.io/analytics/latest/tutorials/tutorial.html) - Practical guide to implementing DP in real-world scenarios
 
-### 2.2 Secure Multi-Party Computation (SMPC) {#22-secure-multi-party-computation-smpc}
+### 2.2 Secure Multi-Party Computation (SMPC)
 
 **NIST AML Attack Mappings**:
 * **Primary Mitigation**:
@@ -514,9 +514,9 @@ Primary goals:
 **Papers**:
 - [Secure Multiparty Computation (Lindell, 2020)](https://dl.acm.org/doi/10.1145/3387108)
 
-## 3. Model Training Phase {#3-model-training-phase}
+## 3. Model Training Phase
 
-### 3.1 Differentially Private Training {#31-differentially-private-training}
+### 3.1 Differentially Private Training
 
 **NIST AML Attack Mappings**:
 * **Primary Mitigation**: [NISTAML.033] Membership Inference
@@ -599,7 +599,7 @@ model.compile(
 - [Deep Learning with Differential Privacy (Abadi et al., 2016)](https://arxiv.org/abs/1607.00133)
 - [Differentially Private Model Publishing for Deep Learning (Yu et al., 2018)](https://arxiv.org/abs/1904.02200)
 
-### 3.2 Federated Learning {#32-federated-learning}
+### 3.2 Federated Learning
 
 **NIST AML Attack Mappings**:
 * **Primary Mitigation**:
@@ -664,9 +664,9 @@ for round_num in range(num_rounds):
 - [Practical Secure Aggregation for Federated Learning on User-Held Data (Bonawitz et al., 2017)](https://arxiv.org/abs/1611.04482)
 - [Federated Learning: Strategies for Improving Communication Efficiency (Konečný et al., 2016)](https://arxiv.org/abs/1610.05492)
 
-## 4. Model Deployment Phase {#4-model-deployment-phase}
+## 4. Model Deployment Phase
 
-### 4.1 Private Inference {#41-private-inference}
+### 4.1 Private Inference
 
 **NIST AML Attack Mappings**:
 * **Primary Mitigation**:
@@ -726,7 +726,7 @@ decrypted_result = encrypted_prediction.decrypt()
 - [CryptoNets: Applying Neural Networks to Encrypted Data with High Throughput and Accuracy (Gilad-Bachrach et al., 2016)](https://www.microsoft.com/en-us/research/publication/cryptonets-applying-neural-networks-to-encrypted-data-with-high-throughput-and-accuracy/)
 - [GAZELLE: A Low Latency Framework for Secure Neural Network Inference (Juvekar et al., 2018)](https://www.usenix.org/conference/usenixsecurity18/presentation/juvekar)
 
-### 4.2 Model Anonymization and Protection {#42-model-anonymization-and-protection}
+### 4.2 Model Anonymization and Protection
 
 **NIST AML Attack Mappings**:
 * **Primary Mitigation**: [NISTAML.031] Model Extraction
@@ -774,9 +774,9 @@ def private_inference(input_data):
 - [Distillation as a Defense to Adversarial Perturbations Against Deep Neural Networks (Papernot et al., 2016)](https://arxiv.org/abs/1511.04508)
 - [Membership Inference Attacks Against Machine Learning Models (Shokri et al., 2017)](https://arxiv.org/abs/1610.05820)
 
-## 5. Privacy Governance {#5-privacy-governance}
+## 5. Privacy Governance
 
-### 5.1 Privacy Budget Management {#51-privacy-budget-management}
+### 5.1 Privacy Budget Management
 
 **NIST AML Attack Mappings**:
 * **Risk Management**:
@@ -818,7 +818,7 @@ for epoch in range(epochs):
 - [The Algorithmic Foundations of Differential Privacy (Dwork & Roth, 2014)](https://www.cis.upenn.edu/~aaroth/Papers/privacybook.pdf)
 - [Renyi Differential Privacy (Mironov, 2017)](https://arxiv.org/abs/1702.07476)
 
-### 5.2 Privacy Impact Evaluation {#52-privacy-impact-evaluation}
+### 5.2 Privacy Impact Evaluation
 
 **NIST AML Attack Mappings**:
 * **Vulnerability Assessment**:
@@ -865,9 +865,9 @@ else:
 - [Evaluating Differentially Private Machine Learning in Practice (Jayaraman & Evans, 2019)](https://arxiv.org/abs/1902.08874)
 - [Machine Learning with Membership Privacy using Adversarial Regularization (Nasr et al., 2018)](https://arxiv.org/abs/1807.05852)
 
-## 6. Evaluation & Metrics {#6-evaluation--metrics}
+## 6. Evaluation & Metrics
 
-### 6.1 Privacy Metrics {#61-privacy-metrics}
+### 6.1 Privacy Metrics
 
 **NIST AML Attack Mappings**:
 * **Comprehensive Coverage**:
@@ -881,15 +881,15 @@ else:
 - **AUC of Membership Inference**: How well attacks can identify training data (closer to 0.5 is better)
 - **Maximum Information Leakage**: Maximum information an adversary can extract
 
-### 6.2 Utility Metrics {#62-utility-metrics}
+### 6.2 Utility Metrics
 
 - **Privacy-Utility Curves**: Plot of accuracy vs. privacy parameter
 - **Performance Gap**: Difference between private and non-private model metrics
 - **Privacy-Constrained Accuracy**: Best accuracy achievable under privacy budget constraint
 
-## 7. Libraries & Tools {#7-libraries--tools}
+## 7. Libraries & Tools
 
-### 7.1 Differential Privacy {#71-differential-privacy}
+### 7.1 Differential Privacy
 
 - [PyDP (Google's Differential Privacy)](https://github.com/OpenMined/PyDP) - Python wrapper for Google's Differential Privacy library
 - [Opacus](https://github.com/pytorch/opacus) - PyTorch-based library for differential privacy in deep learning
@@ -898,7 +898,7 @@ else:
 - [Tumult Analytics](https://github.com/tumult-labs/analytics) - Open-source DP library with LDP support
 - [Microsoft SmartNoise](https://github.com/opendifferentialprivacy/smartnoise-core) - Extensible DP framework
 
-### 7.2 Federated Learning {#72-federated-learning}
+### 7.2 Federated Learning
 
 - [TensorFlow Federated](https://github.com/tensorflow/federated) - Google's framework for federated learning
 - [Flower](https://github.com/adap/flower) - A friendly federated learning framework
@@ -907,7 +907,7 @@ else:
 - [FedML](https://github.com/FedML-AI/FedML) - Research-oriented federated learning framework
 - [NVFlare](https://github.com/NVIDIA/NVFlare) - NVIDIA's federated learning framework
 
-### 7.3 Secure Computation {#73-secure-computation}
+### 7.3 Secure Computation
 
 - [TenSEAL](https://github.com/OpenMined/TenSEAL) - Library for homomorphic encryption with tensor operations
 - [Microsoft SEAL](https://github.com/microsoft/SEAL) - Homomorphic encryption library
@@ -915,22 +915,22 @@ else:
 - [MP-SPDZ](https://github.com/data61/MP-SPDZ) - Secure multi-party computation framework
 - [TF Encrypted](https://github.com/tf-encrypted/tf-encrypted) - Privacy-preserving machine learning in TensorFlow
 
-### 7.4 Synthetic Data {#74-synthetic-data}
+### 7.4 Synthetic Data
 
 - [SDV](https://github.com/sdv-dev/SDV) - Synthetic data generation ecosystem of libraries
 - [Gretel Synthetics](https://github.com/gretelai/gretel-synthetics) - Synthetic data generation with privacy guarantees
 - [CTGAN](https://github.com/sdv-dev/CTGAN) - GAN-based tabular data synthesis
 - [Ydata-Synthetic](https://github.com/ydataai/ydata-synthetic) - Synthetic data generation for tabular and time-series data
 
-### 7.5 Privacy Evaluation {#75-privacy-evaluation}
+### 7.5 Privacy Evaluation
 
 - [ML Privacy Meter](https://github.com/privacytrustlab/ml_privacy_meter) - Tool for quantifying privacy risks in ML
 - [Adversarial Robustness Toolbox](https://github.com/Trusted-AI/adversarial-robustness-toolbox) - For evaluating model robustness including privacy attacks
 - [TensorFlow Privacy Attacks](https://github.com/tensorflow/privacy) - Implementation of privacy attacks in TensorFlow
 
-## 8. Tutorials & Resources {#8-tutorials--resources}
+## 8. Tutorials & Resources
 
-### 8.1 Differential Privacy Tutorials {#81-differential-privacy}
+### 8.1 Differential Privacy Tutorials
 
 - [Google's Differential Privacy Tutorial](https://github.com/google/differential-privacy/tree/main/examples)
   - **Language**: C++, Go, Java
@@ -952,7 +952,7 @@ else:
   - **Language**: Python
   - **Highlights**: DP with scikit-learn integration, classification, regression
 
-### 8.2 Federated Learning Tutorials {#82-federated-learning}
+### 8.2 Federated Learning Tutorials
 
 - [TensorFlow Federated Tutorials](https://www.tensorflow.org/federated/tutorials)
   - **Language**: Python (TensorFlow)
@@ -974,7 +974,7 @@ else:
   - **Language**: Python
   - **Highlights**: Medical imaging, federated analytics, custom aggregation
 
-### 8.3 Secure Computation Tutorials {#83-secure-computation}
+### 8.3 Secure Computation Tutorials
 
 - [Microsoft SEAL Examples](https://github.com/microsoft/SEAL/tree/main/native/examples)
   - **Language**: C++
@@ -992,7 +992,7 @@ else:
   - **Language**: Python (TensorFlow)
   - **Highlights**: Private predictions, secure training, encrypted computations
 
-### 8.4 Synthetic Data Tutorials {#84-synthetic-data}
+### 8.4 Synthetic Data Tutorials
 
 - [SDV Tutorials](https://docs.sdv.dev/sdv/tutorials)
   - **Language**: Python
@@ -1010,7 +1010,7 @@ else:
   - **Language**: Python
   - **Highlights**: GAN models for tabular and time-series data
 
-### 8.5 Privacy Evaluation Tutorials {#85-privacy-evaluation}
+### 8.5 Privacy Evaluation Tutorials
 
 - [ML Privacy Meter Tutorial](https://github.com/privacytrustlab/ml_privacy_meter/tree/master/examples)
   - **Language**: Python (TensorFlow)
@@ -1024,7 +1024,7 @@ else:
   - **Language**: Python (TensorFlow)
   - **Highlights**: Membership inference attack implementation and evaluation
 
-## Contribute {#contribute}
+## Contribute
 
 Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first.
 

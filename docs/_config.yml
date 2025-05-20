@@ -1,0 +1,7 @@
+theme: jekyll-theme-minimal
+title: Awesome ML Privacy Mitigations
+description: A comprehensive guide to privacy-preserving machine learning techniques and tools
+markdown: kramdown
+plugins:
+  - jekyll-relative-links
+  - jekyll-seo-tag 

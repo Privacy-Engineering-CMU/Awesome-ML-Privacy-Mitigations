@@ -1,9 +1,3 @@
----
-layout: default
-title: Detailed Guide - Awesome ML Privacy Mitigations
-permalink: /detailed/
----
-
 # Awesome ML Privacy Mitigation [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 > A curated list of practical privacy-preserving techniques for machine learning
@@ -38,11 +32,11 @@ This repository aims to bridge the gap between theoretical privacy research and 
   - [7.4 Synthetic Data](#74-synthetic-data)
   - [7.5 Privacy Evaluation](#75-privacy-evaluation)
 - [8. Tutorials & Resources](#8-tutorials--resources)
-  - [8.1 Differential Privacy](#81-differential-privacy)
-  - [8.2 Federated Learning](#82-federated-learning)
-  - [8.3 Secure Computation](#83-secure-computation)
-  - [8.4 Synthetic Data](#84-synthetic-data)
-  - [8.5 Privacy Evaluation](#85-privacy-evaluation)
+  - [8.1 Differential Privacy Tutorials](#81-differential-privacy)
+  - [8.2 Federated Learning Tutorials](#82-federated-learning)
+  - [8.3 Secure Computation Tutorials](#83-secure-computation)
+  - [8.4 Synthetic Data Tutorials](#84-synthetic-data)
+  - [8.5 Privacy Evaluation Tutorials](#85-privacy-evaluation)
 - [Contribute](#contribute)
 
 ## Introduction

@@ -1,4 +1,4 @@
-theme: jekyll-theme-minimal
+theme: jekyll-theme-cayman
 title: Awesome ML Privacy Mitigations
 description: A comprehensive guide to privacy-preserving machine learning techniques and tools
 markdown: kramdown

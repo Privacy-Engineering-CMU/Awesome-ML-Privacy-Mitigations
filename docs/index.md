@@ -7,4 +7,4 @@ title: Awesome ML Privacy Mitigations
 
 Welcome to the comprehensive guide on privacy-preserving machine learning techniques and tools.
 
-[View the detailed guide](detailed) 
+[View the detailed guide](DETAILED.md) 

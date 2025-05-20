@@ -2,19 +2,31 @@
 
 > A community-driven collection of privacy-preserving machine learning techniques, tools, and practical evaluations
 
-This repository serves as a living catalog of privacy-preserving machine learning (PPML) techniques and tools. Building on the [NIST Adversarial Machine Learning Taxonomy (2025)](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf), our goal is to create a comprehensive resource where practitioners can find, evaluate, and implement privacy-preserving solutions in their ML workflows. The repository is actively maintained and evaluated by our team, who:
+This repository serves as a living catalog of privacy-preserving machine learning (PPML) techniques and tools. Building on the [NIST Adversarial Machine Learning Taxonomy (2025)](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf), our goal is to create a comprehensive resource where practitioners can find, evaluate, and implement privacy-preserving solutions in their ML workflows.
 
-- Test and benchmark each framework/tool
-- Document pros, cons, and integration challenges
-- Provide practical examples and use cases
-- Maintain an evaluation website with detailed analyses
-- Keep the collection updated with the latest PPML developments
+<details>
+<summary>About Our Team</summary>
+
+Our team actively maintains and evaluates the repository by:
+- Testing and benchmarking each framework/tool
+- Documenting pros, cons, and integration challenges
+- Providing practical examples and use cases
+- Maintaining an evaluation website with detailed analyses
+- Keeping the collection updated with the latest PPML developments
+</details>
+
+<details>
+<summary>How to Contribute</summary>
 
 We welcome contributions from the community! Whether you're a researcher, practitioner, or enthusiast, you can help by:
 - Adding new privacy-preserving tools and frameworks
 - Sharing your experiences with existing tools
 - Contributing evaluation results
 - Suggesting improvements to our documentation
+</details>
+
+<details>
+<summary>Repository Structure</summary>
 
 Each section includes:
 1. **Libraries & Tools**: Practical implementations and frameworks you can use
@@ -26,9 +38,7 @@ The techniques covered include:
 - Differentially private training and federated learning
 - Private inference and model protection
 - Privacy governance and evaluation
-
-Key Resources:
-- [NIST Adversarial Machine Learning Taxonomy (2025)](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf)
+</details>
 
 ## Contents
 

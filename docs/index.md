@@ -510,6 +510,7 @@ Primary goals:
 - [PySyft](https://github.com/OpenMined/PySyft)
 - [CrypTen](https://github.com/facebookresearch/CrypTen)
 - [TF Encrypted](https://github.com/tf-encrypted/tf-encrypted)
+- [Carbyne Stack](https://carbynestack.io/)
 
 **Papers**:
 - [Secure Multiparty Computation (Lindell, 2020)](https://dl.acm.org/doi/10.1145/3387108)

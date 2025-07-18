@@ -8,6 +8,14 @@ An example scenario has been included under each section to assist practicitione
 
 We follow MedAI Healthcare Solutions, a fictional company developing an AI system to predict patient readmission risk using electronic health records (EHRs) from 50 hospitals across the country. The system will help hospitals optimize discharge planning and reduce healthcare costs. However, each phase of their ML pipeline presents unique privacy challenges that could expose sensitive patient information or violate HIPAA regulations.
 
+A privacy risk is defined as the potential for unauthorized disclosure, inference, or reconstruction of sensitive individual information through the machine learning pipeline, measured by the combination of:
+
+- Likelihood of Attack Success - The probability that an adversary can exploit vulnerabilities in the ML system
+- Severity of Information Disclosure - The sensitivity and scope of personal information that could be exposed
+- Impact on Individuals - The potential harm (financial, reputational, legal, or personal) resulting from privacy breaches
+
+The privacy risks in the MedAI healthcare scenario were systematically identified using structured privacy threat modeling frameworks, such as LINDDUN and global regulatory requirements.
+
 <details>
 <summary>About Our Team</summary>
 

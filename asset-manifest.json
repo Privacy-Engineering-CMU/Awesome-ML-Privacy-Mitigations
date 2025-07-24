@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/webapp/static/css/main.e8ea9eb4.css",
-    "main.js": "/webapp/static/js/main.7df14665.js",
-    "static/js/453.630d3d02.chunk.js": "/webapp/static/js/453.630d3d02.chunk.js",
-    "index.html": "/webapp/index.html",
-    "main.e8ea9eb4.css.map": "/webapp/static/css/main.e8ea9eb4.css.map",
-    "main.7df14665.js.map": "/webapp/static/js/main.7df14665.js.map",
-    "453.630d3d02.chunk.js.map": "/webapp/static/js/453.630d3d02.chunk.js.map"
+    "main.css": "/Awesome-ML-Privacy-Mitigations/webapp/static/css/main.e8ea9eb4.css",
+    "main.js": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/main.bdd4eeef.js",
+    "static/js/453.630d3d02.chunk.js": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/453.630d3d02.chunk.js",
+    "index.html": "/Awesome-ML-Privacy-Mitigations/webapp/index.html",
+    "main.e8ea9eb4.css.map": "/Awesome-ML-Privacy-Mitigations/webapp/static/css/main.e8ea9eb4.css.map",
+    "main.bdd4eeef.js.map": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/main.bdd4eeef.js.map",
+    "453.630d3d02.chunk.js.map": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/453.630d3d02.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e8ea9eb4.css",
-    "static/js/main.7df14665.js"
+    "static/js/main.bdd4eeef.js"
   ]
 }

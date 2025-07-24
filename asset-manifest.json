@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Awesome-ML-Privacy-Mitigations/webapp/static/css/main.e8ea9eb4.css",
-    "main.js": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/main.bdd4eeef.js",
-    "static/js/453.630d3d02.chunk.js": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/453.630d3d02.chunk.js",
-    "index.html": "/Awesome-ML-Privacy-Mitigations/webapp/index.html",
-    "main.e8ea9eb4.css.map": "/Awesome-ML-Privacy-Mitigations/webapp/static/css/main.e8ea9eb4.css.map",
-    "main.bdd4eeef.js.map": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/main.bdd4eeef.js.map",
-    "453.630d3d02.chunk.js.map": "/Awesome-ML-Privacy-Mitigations/webapp/static/js/453.630d3d02.chunk.js.map"
+    "main.css": "/Awesome-ML-Privacy-Mitigations/static/css/main.e8ea9eb4.css",
+    "main.js": "/Awesome-ML-Privacy-Mitigations/static/js/main.9be392f8.js",
+    "static/js/453.630d3d02.chunk.js": "/Awesome-ML-Privacy-Mitigations/static/js/453.630d3d02.chunk.js",
+    "index.html": "/Awesome-ML-Privacy-Mitigations/index.html",
+    "main.e8ea9eb4.css.map": "/Awesome-ML-Privacy-Mitigations/static/css/main.e8ea9eb4.css.map",
+    "main.9be392f8.js.map": "/Awesome-ML-Privacy-Mitigations/static/js/main.9be392f8.js.map",
+    "453.630d3d02.chunk.js.map": "/Awesome-ML-Privacy-Mitigations/static/js/453.630d3d02.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e8ea9eb4.css",
-    "static/js/main.bdd4eeef.js"
+    "static/js/main.9be392f8.js"
   ]
 }
